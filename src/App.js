@@ -5,15 +5,16 @@ import { setFilterMor, setFilterOne } from './redux/reducers/filters';
 import './App.css';
 import Table from './components/Table';
 import TypeFilter from './components/Filters/TypeFilter';
+import NumberFilters from './components/Filters/NumberFilters';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchPlanetsData = async () => {
-      const data = await fetchPlanets();
-      dispatch(setFilterMor(data.results));
-      dispatch(setFilterOne(data.results));
+      const { results } = await fetchPlanets();
+      dispatch(setFilterMor(results));
+      dispatch(setFilterOne(results));
     };
     fetchPlanetsData();
   }, [dispatch]);
@@ -22,6 +23,7 @@ function App() {
     <div>
       <h1>Star Wars Planets</h1>
       <TypeFilter />
+      <NumberFilters />
       <Table />
     </div>
   );
