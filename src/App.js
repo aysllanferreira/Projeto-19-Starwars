@@ -4,6 +4,7 @@ import fetchPlanets from './services/planetsApi';
 import { setFilterMor, setFilterOne } from './redux/reducers/filters';
 import './App.css';
 import Table from './components/Table';
+import TypeFilter from './components/Filters/TypeFilter';
 
 function App() {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ function App() {
   return (
     <div>
       <h1>Star Wars Planets</h1>
+      <TypeFilter />
       <Table />
     </div>
   );
