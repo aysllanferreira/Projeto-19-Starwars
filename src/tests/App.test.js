@@ -13,14 +13,15 @@ describe ('Testando o componente App', () => {
 
   test('Filtre um item usando o data-testid="name-filter"', async () => {
     renderWithRedux(<App />);
-    const input = screen.getByTestId('name-filter');
-    expect(input).toBeInTheDocument();
-    userEvent.type(input, 'tat');
     await waitFor(() => {
       const planet = screen.getByText(/tatooine/i);
       expect(planet).toBeInTheDocument();
     }
     );
+    const input = screen.getByTestId('name-filter');
+    expect(input).toBeInTheDocument();
+    userEvent.type(input, 'tat');
+    
   });
 
   test('Testa se no componente APP, acontece um fetch', async () => {
@@ -31,13 +32,14 @@ describe ('Testando o componente App', () => {
 
   test ('Testa se o filtro de coluna funciona', async () => {
     renderWithRedux(<App />);
-    const input = screen.getByTestId('column-filter');
-    expect(input).toBeInTheDocument();
-    userEvent.selectOptions(input, 'population');
     await waitFor(() => {
       const planet = screen.getByText(/tatooine/i);
       expect(planet).toBeInTheDocument();
     });
+    const input = screen.getByTestId('column-filter');
+    expect(input).toBeInTheDocument();
+    userEvent.selectOptions(input, 'population');
+   
   });
 
   test ('Testa os filtros de ordenar por ordem crescente e decrescente', async () => {
@@ -79,5 +81,30 @@ describe ('Testando o componente App', () => {
 
     userEvent.click(getBtn);
 
+  });
+
+  test ('Testa os multiplos filtros', async () => {
+    renderWithRedux(<App />);
+    await waitFor(() => {
+      const planet = screen.getByText(/tatooine/i);
+      expect(planet).toBeInTheDocument();
+    });
+    const getColumnFilter = screen.getByTestId('column-filter');
+    userEvent.selectOptions(getColumnFilter, 'diameter');
+    const getComparisonFilter = screen.getByTestId('comparison-filter');
+    userEvent.selectOptions(getComparisonFilter, 'maior que');
+    const getValueFilter = screen.getByTestId('value-filter');
+    userEvent.type(getValueFilter, '10000');
+    const getBtn = screen.getByTestId('button-filter');
+    userEvent.click(getBtn);
+
+    const getColumnFilter2 = screen.getByTestId('column-filter');
+    userEvent.selectOptions(getColumnFilter2, 'population');
+    const getComparisonFilter2 = screen.getByTestId('comparison-filter');
+    userEvent.selectOptions(getComparisonFilter2, 'menor que');
+    const getValueFilter2 = screen.getByTestId('value-filter');
+    userEvent.type(getValueFilter2, '100000');
+    const getBtn2 = screen.getByTestId('button-filter');
+    userEvent.click(getBtn2);
   });
 });
