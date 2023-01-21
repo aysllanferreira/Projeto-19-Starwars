@@ -58,6 +58,10 @@ function NumberFilters() {
     }
   };
 
+  useEffect(() => {
+    setNewFilters(filterOne);
+  }, [filterOne]);
+
   const multipleFilters = (column, comparison, value) => {
     if (newFilters.length > 0) {
       switch (comparison) {
@@ -89,15 +93,22 @@ function NumberFilters() {
     const comparison = selectGreaterThan;
     const value = +inputValue;
 
-    if (verifyEmptySearch()) return;
-    comparisonFilter(column, comparison, value);
-    multipleFilters(column, comparison, value);
-    removeRepeatedFilters(column);
-  };
+    if (verifyEmptySearch(column, comparison, value)) return;
 
-  useEffect(() => {
-    setNewFilters(filterOne);
-  }, [filterOne]);
+    comparisonFilter(column, comparison, value);
+
+    if (addedFilters.length > 0) {
+      multipleFilters(column, comparison, value);
+    }
+
+    removeRepeatedFilters(column);
+
+    setColumnFilter('population');
+    setSelectGreaterThan('maior que');
+    setInputValue(0);
+
+    return null;
+  };
 
   const removeFilter = ({ target }) => {
     const { id, name } = target;
@@ -126,6 +137,32 @@ function NumberFilters() {
     }
   }, [addedFilters, previousFilter, dispatch]);
 
+  useEffect(() => {
+    if (addedFilters.length > 0) {
+      const filter = addedFilters.reduce((acc, item) => {
+        switch (item.comparison) {
+        case 'maior que':
+          return acc.filter((planet) => +planet[item.column] > +item.value);
+        case 'menor que':
+          return acc.filter((planet) => +planet[item.column] < +item.value);
+        case 'igual a':
+          return acc.filter((planet) => +planet[item.column] === +item.value);
+        default:
+          return acc;
+        }
+      }, previousFilter);
+      dispatch(setFilterOne(filter));
+    } else {
+      dispatch(setFilterOne(previousFilter));
+    }
+  }, [addedFilters, previousFilter, dispatch]);
+
+  const removeAllFilters = () => {
+    dispatch(setFilterOne(previousFilter));
+    setAddedFilters([]);
+    setSelectData(['population', 'orbital_period',
+      'diameter', 'rotation_period', 'surface_water']);
+  };
   return (
     <form onSubmit={ handleFilters }>
       <select
@@ -159,22 +196,30 @@ function NumberFilters() {
       </button>
       <br />
       {addedFilters.map((item) => (
-        <div key={ item.id }>
+        <div key={ Math.random() } data-testid="filter">
           <span>{item.column}</span>
           <span>{item.comparison}</span>
           <span>{item.value}</span>
+          {/* Create a button to delete filter and make it works */}
           <button
             type="button"
             id={ item.id }
             name={ item.column }
             onClick={ removeFilter }
-            data-testid="filter"
           >
             X
           </button>
         </div>
       ))}
+      <button
+        type="button"
+        data-testid="button-remove-filters"
+        onClick={ removeAllFilters }
+      >
+        Remover filtros
+      </button>
     </form>
+
   );
 }
 
