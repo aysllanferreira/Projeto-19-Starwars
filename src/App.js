@@ -6,6 +6,7 @@ import './App.css';
 import Table from './components/Table';
 import TypeFilter from './components/Filters/TypeFilter';
 import NumberFilters from './components/Filters/NumberFilters';
+import OrderFilters from './components/Filters/OrderFilters';
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function App() {
       <h1>Star Wars Planets</h1>
       <TypeFilter />
       <NumberFilters />
+      <OrderFilters />
       <Table />
     </div>
   );
