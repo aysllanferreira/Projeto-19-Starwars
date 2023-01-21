@@ -35,26 +35,20 @@ function NumberFilters() {
   };
 
   const comparisonFilter = (column, comparison, value) => {
-    switch (comparison) {
-    case 'maior que':
+    if (comparison === 'maior que') {
       dispatch(setFilterOne(previousFilter.filter((item) => +item[column] > +value)));
       setAddedFilters([...addedFilters, { column, comparison, value, id: ids + 1 }]);
       setIds(ids + 1);
-      break;
-    case 'menor que':
+    } else if (comparison === 'menor que') {
       dispatch(setFilterOne(previousFilter.filter((item) => +item[column] < +value)));
       setIds(ids + 1);
       setAddedFilters([...addedFilters, { column, comparison, value, id: ids + 1 }]);
       setIds(ids + 1);
-      break;
-    case 'igual a':
+    } else if (comparison === 'igual a') {
       dispatch(setFilterOne(previousFilter.filter((item) => +item[column] === +value)));
       setIds(ids + 1);
       setAddedFilters([...addedFilters, { column, comparison, value, id: ids + 1 }]);
       setIds(ids + 1);
-      break;
-    default:
-      break;
     }
   };
 
@@ -64,18 +58,12 @@ function NumberFilters() {
 
   const multipleFilters = (column, comparison, value) => {
     if (newFilters.length > 0) {
-      switch (comparison) {
-      case 'maior que':
+      if (comparison === 'maior que') {
         dispatch(setFilterOne(newFilters.filter((item) => +item[column] > +value)));
-        break;
-      case 'menor que':
+      } else if (comparison === 'menor que') {
         dispatch(setFilterOne(newFilters.filter((item) => +item[column] < +value)));
-        break;
-      case 'igual a':
+      } else if (comparison === 'igual a') {
         dispatch(setFilterOne(newFilters.filter((item) => +item[column] === +value)));
-        break;
-      default:
-        break;
       }
     }
   };
@@ -120,16 +108,14 @@ function NumberFilters() {
   useEffect(() => {
     if (addedFilters.length > 0) {
       const filter = addedFilters.reduce((acc, item) => {
-        switch (item.comparison) {
-        case 'maior que':
+        if (item.comparison === 'maior que') {
           return acc.filter((planet) => +planet[item.column] > +item.value);
-        case 'menor que':
+        } if (item.comparison === 'menor que') {
           return acc.filter((planet) => +planet[item.column] < +item.value);
-        case 'igual a':
+        } if (item.comparison === 'igual a') {
           return acc.filter((planet) => +planet[item.column] === +item.value);
-        default:
-          return acc;
         }
+        return acc;
       }, previousFilter);
       dispatch(setFilterOne(filter));
     } else {
@@ -140,16 +126,14 @@ function NumberFilters() {
   useEffect(() => {
     if (addedFilters.length > 0) {
       const filter = addedFilters.reduce((acc, item) => {
-        switch (item.comparison) {
-        case 'maior que':
+        if (item.comparison === 'maior que') {
           return acc.filter((planet) => +planet[item.column] > +item.value);
-        case 'menor que':
+        } if (item.comparison === 'menor que') {
           return acc.filter((planet) => +planet[item.column] < +item.value);
-        case 'igual a':
+        } if (item.comparison === 'igual a') {
           return acc.filter((planet) => +planet[item.column] === +item.value);
-        default:
-          return acc;
         }
+        return acc;
       }, previousFilter);
       dispatch(setFilterOne(filter));
     } else {

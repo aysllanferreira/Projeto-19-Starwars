@@ -22,7 +22,6 @@ function OrderFilters() {
     } else {
       setOrder({ ...order, sort: value });
     }
-    console.log(order);
   };
 
   const sortFilter = () => {
