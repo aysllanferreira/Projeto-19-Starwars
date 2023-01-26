@@ -55,10 +55,7 @@ describe ('Testando o componente App', () => {
   test ('Testa se o filtro de número funciona', async () => {
     renderWithRedux(<App />);
 
-    await waitFor(() => { 
-      const planet = screen.getByText(/Tatooine/i);
-      expect(planet).toBeInTheDocument();
-    });
+    await waitForElementToBeRemoved(() => screen.findByTestId('loading'));
 
     const getColumnFilter = screen.getByTestId('column-filter');
     userEvent.selectOptions(getColumnFilter, 'diameter');
@@ -74,10 +71,8 @@ describe ('Testando o componente App', () => {
 
   test ('Testa os multiplos filtros', async () => {
     renderWithRedux(<App />);
-    await waitFor(() => {
-      const planet = screen.getByText(/tatooine/i);
-      expect(planet).toBeInTheDocument();
-    });
+    await waitForElementToBeRemoved(() => screen.getByTestId('loading'));
+    
     const getColumnFilter = screen.getByTestId('column-filter');
     userEvent.selectOptions(getColumnFilter, 'diameter');
     const getComparisonFilter = screen.getByTestId('comparison-filter');

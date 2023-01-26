@@ -130,10 +130,8 @@ function NumberFilters() {
           return acc.filter((planet) => +planet[item.column] > +item.value);
         } if (item.comparison === 'menor que') {
           return acc.filter((planet) => +planet[item.column] < +item.value);
-        } if (item.comparison === 'igual a') {
-          return acc.filter((planet) => +planet[item.column] === +item.value);
         }
-        return acc;
+        return acc.filter((planet) => +planet[item.column] === +item.value);
       }, previousFilter);
       dispatch(setFilterOne(filter));
     } else {
